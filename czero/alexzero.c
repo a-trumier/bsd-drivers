@@ -11,8 +11,10 @@
 
 #define BUFSIZE 256
 
-MALLOC_DECLARE(M_BUF);
-MALLOC_DEFINE(M_BUF, "buffer", "buffer for zeros");
+static d_open_t      alexzero_open;
+static d_close_t     alexzero_close;
+static d_read_t      alexzero_read;
+static d_write_t     alexzero_write;
 
 static struct cdevsw alexzero_cdevsw = {
 	.d_version = D_VERSION,
@@ -24,6 +26,9 @@ static struct cdevsw alexzero_cdevsw = {
 };
 
 static char *buf;
+
+MALLOC_DECLARE(M_BUF);
+MALLOC_DEFINE(M_BUF, "buffer", "buffer for zeros");
 
 static int
 alexzero_loader(struct module *m __unused, int what, void *arg __unused)
