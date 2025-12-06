@@ -53,7 +53,6 @@ alexzero_loader(struct module *m __unused, int what, void *arg __unused)
 		break;
 	case MOD_UNLOAD:
 		destroy_dev(alexzero_dev);
-		printf("alexzero device unloaded.\n");
 		break;
 	default:
 		error = EOPNOTSUPP;
@@ -66,8 +65,6 @@ alexzero_open(struct cdev *dev __unused, int oflags __unused, int devtype __unus
     struct thread *td __unused)
 {
 	int error = 0;
-
-	uprintf("Opened device \"alexzero\" successfully.\n");
 	return (error);
 }
 
@@ -76,7 +73,6 @@ alexzero_close(struct cdev *dev __unused, int fflag __unused, int devtype __unus
     struct thread *td __unused)
 {
 
-	uprintf("Closing device \"alexzero\".\n");
 	return (0);
 }
 
@@ -87,14 +83,15 @@ alexzero_read(struct cdev *dev __unused, struct uio *uio, int ioflag __unused)
 	int error;
     error = 0;
 
-    /* First, allocate a buffer of the correct size to pass into userland */
+    /* First, allocate a buffer of the correct size to pass into userland 
+    * ensuring that if we are asking for less than 1 just give them
+     * 1
+     */
 	amt = MIN(uio->uio_resid, 1);
     buf = malloc((amt) * sizeof(char), M_BUF, M_WAITOK | M_ZERO);
     memset(buf, 0, amt);
-    uprintf("Buffer size is %zu. Moving\n", amt);
     if ((error = uiomove(buf, amt, uio)) != 0)
         uprintf("uiomove failed!\n");
-    uprintf("Got past move. Freeing and moving on\n");
     free(buf, M_BUF);
 
 	return (error);
@@ -103,8 +100,7 @@ alexzero_read(struct cdev *dev __unused, struct uio *uio, int ioflag __unused)
 static int
 alexzero_write(struct cdev *dev __unused, struct uio *uio, int ioflag __unused)
 {
-    /* ERROR: Cannot write to zero */
-    return EINVAL;
+    return 0;
 }
 
 DEV_MODULE(alexzero, alexzero_loader, NULL);
