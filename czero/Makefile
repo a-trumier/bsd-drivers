@@ -1,4 +1,4 @@
-SRCS=czero.c
-KMOD=czero
+SRCS=alexzero.c
+KMOD=alexzero
 
 .include <bsd.kmod.mk>
