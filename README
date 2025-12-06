@@ -1,3 +1,5 @@
 -- BSD DRIVERS --
 
-TODO
+This is where I reinvent the well and/or test writing device drivers for
+FreeBSD. I feel like FreeBSD is a great OS, it just needs more hardware
+support. So, I'm learning to give it more!
