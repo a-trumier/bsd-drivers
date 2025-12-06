@@ -16,16 +16,16 @@
  */
 
 static int
-skel_loader(struct module *m, int what, void *arg)
+alexzero_loader(struct module *m, int what, void *arg)
 {
 	int err = 0;
 
 	switch (what) {
 	case MOD_LOAD:                /* kldload */
-		uprintf("Skeleton KLD loaded.\n");
+		uprintf("alexzero loaded.\n");
 		break;
 	case MOD_UNLOAD:
-		uprintf("Skeleton KLD unloaded.\n");
+		uprintf("alexzero unloaded.\n");
 		break;
 	default:
 		err = EOPNOTSUPP;
@@ -36,10 +36,10 @@ skel_loader(struct module *m, int what, void *arg)
 
 /* Declare this module to the rest of the kernel */
 
-static moduledata_t skel_mod = {
-	"skel",
+static moduledata_t alexzero_mod = {
+	"alexzero",
 	skel_loader,
 	NULL
 };
 
-DECLARE_MODULE(skeleton, skel_mod, SI_SUB_KLD, SI_ORDER_ANY);
+DECLARE_MODULE(alexzero, alexzero_mod, SI_SUB_KLD, SI_ORDER_ANY);
