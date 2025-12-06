@@ -91,7 +91,7 @@ alexzero_read(struct cdev *dev __unused, struct uio *uio, int ioflag __unused)
 	amt = MIN(uio->uio_resid, 1);
     buf = malloc((amt) * sizeof(char), M_BUF, M_WAITOK | M_ZERO);
     memset(buf, 0, amt);
-    uprintf("Buffer size is %d. Moving\n", amt);
+    uprintf("Buffer size is %zu. Moving\n", amt);
     if ((error = uiomove(buf, amt, uio)) != 0)
         uprintf("uiomove failed!\n");
     uprintf("Got past move. Freeing and moving on\n");
