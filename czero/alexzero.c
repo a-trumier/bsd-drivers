@@ -28,6 +28,7 @@ static struct cdevsw alexzero_cdevsw = {
 };
 
 static char *buf;
+static struct cdev *alexzero_dev;
 
 MALLOC_DECLARE(M_BUF);
 MALLOC_DEFINE(M_BUF, "buffer", "buffer for zeros");
@@ -52,7 +53,6 @@ alexzero_loader(struct module *m __unused, int what, void *arg __unused)
 		break;
 	case MOD_UNLOAD:
 		destroy_dev(alexzero_dev);
-        free()
 		printf("alexzero device unloaded.\n");
 		break;
 	default:
@@ -95,7 +95,7 @@ alexzero_read(struct cdev *dev __unused, struct uio *uio, int ioflag __unused)
 	if ((error = uiomove(buf, amt, uio)) != 0)
 		uprintf("uiomove failed!\n");
 
-    free(buf);
+    free(buf, M_BUF);
 
 	return (error);
 }
