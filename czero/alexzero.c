@@ -88,17 +88,12 @@ alexzero_read(struct cdev *dev __unused, struct uio *uio, int ioflag __unused)
     error = 0;
 
     /* First, allocate a buffer of the correct size to pass into userland */
-	amt = MIN(uio->uio_resid, 0);
-    if (amt != 0)
-    {
-        buf = malloc((amt) * sizeof(char), M_BUF, M_WAITOK | M_ZERO);
-        memset(buf, 0, amt);
-        if ((error = uiomove(buf, amt, uio)) != 0)
-            uprintf("uiomove failed!\n");
-        free(buf, M_BUF);
-    }
-
-
+	amt = MIN(uio->uio_resid, 1);
+    buf = malloc((amt) * sizeof(char), M_BUF, M_WAITOK | M_ZERO);
+    memset(buf, 0, amt);
+    if ((error = uiomove(buf, amt, uio)) != 0)
+        uprintf("uiomove failed!\n");
+    free(buf, M_BUF);
 
 	return (error);
 }
